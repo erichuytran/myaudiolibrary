@@ -17,10 +17,10 @@ public class MyRunner implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        Iterable<Artist> artists = artistRepository.findAll();
-        for (Artist artist : artists) {
-            System.out.println(artist.toString());
-        }
+//        Iterable<Artist> artists = artistRepository.findAll();
+//        for (Artist artist : artists) {
+//            System.out.println(artist.toString());
+//        }
 
 //        for (Artist artist : artists) {
 //            Set<Album> albums = artist.getAlbums();

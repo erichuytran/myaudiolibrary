@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @RestController
@@ -21,6 +22,9 @@ public class ArtistController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Optional<Artist> getArtist(@PathVariable(value = "id") Long id) {
         Optional<Artist> artist = artistRepository.findById(id);
+        if(artist.isEmpty()) {
+            throw new EntityNotFoundException("L'artiste d'identifiant " + id + " n'a pas été trouvé.");
+    }
         return artist;
     }
 }
