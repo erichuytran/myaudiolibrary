@@ -1,4 +1,4 @@
-package com.ipiecoles.java.mdd050.security;
+package com.myaudiolibrary.web.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;

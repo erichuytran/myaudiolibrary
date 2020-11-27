@@ -52,20 +52,20 @@ public class Artist {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Artist artist = (Artist) o;
-        return albums.equals(artist.albums) &&
+        return 
                 id.equals(artist.id) &&
                 name.equals(artist.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(albums, id, name);
+        return Objects.hash(id, name);
     }
 
     @Override
     public String toString() {
         return "Artist{" +
-                "albums=" + albums +
+               
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 '}';
