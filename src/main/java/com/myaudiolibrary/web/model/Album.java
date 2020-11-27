@@ -56,20 +56,20 @@ public class Album {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Album album = (Album) o;
-        return Objects.equals(artist, album.artist) &&
+        return 
                 Objects.equals(id, album.id) &&
                 Objects.equals(title, album.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(artist, id, title);
+        return Objects.hash(id, title);
     }
 
     @Override
     public String toString() {
         return "Album{" +
-                "artist=" + artist +
+               
                 ", id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 '}';
