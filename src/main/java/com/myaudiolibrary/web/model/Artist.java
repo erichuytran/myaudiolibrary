@@ -31,6 +31,14 @@ public class Artist {
         this.name = name;
     }
 
+    public void setAlbums(Set<Album> albums) {
+        this.albums = albums;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
