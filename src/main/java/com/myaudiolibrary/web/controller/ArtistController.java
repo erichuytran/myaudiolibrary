@@ -82,4 +82,16 @@ public class ArtistController {
         }
         return artistRepository.save(artist);
     }
+
+    @PutMapping(value = "/{id}")
+    public Artist updateArtist(@PathVariable("id") Long id, @RequestBody Artist artist) {
+        if (!artistRepository.existsById(id)) {
+            throw new EntityNotFoundException("L'artiste d'identifiant " + id + " n'a pas été trouvé.");
+        }
+        if (!id.equals(artist.getId())) {
+            throw new IllegalArgumentException("Requete invalide.");
+        }
+        return artistRepository.save(artist);
+    }
+
 }
