@@ -44,7 +44,9 @@ public class ArtistController {
     }
 
 //    Q2
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "",
+            params = {"name", "page", "size", "sortDirection", "sortProperty"},
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<Artist> searchByName(
             @RequestParam(value = "name") String name,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
