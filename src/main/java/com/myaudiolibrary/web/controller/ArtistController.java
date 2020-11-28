@@ -1,12 +1,14 @@
 package com.myaudiolibrary.web.controller;
 
 import com.myaudiolibrary.web.model.Artist;
+import com.myaudiolibrary.web.repository.AlbumRepository;
 import com.myaudiolibrary.web.repository.ArtistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,9 @@ public class ArtistController {
 
     @Autowired
     ArtistRepository artistRepository;
+
+    @Autowired
+    AlbumRepository albumRepository;
 
     public void checkParams(Integer page, Integer size, Sort.Direction sortDirection) {
         if (page < 0) {
@@ -75,6 +80,7 @@ public class ArtistController {
         return artistsPage;
     }
 
+//    Q4
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Artist createArtist(@RequestBody Artist artist) throws InstanceAlreadyExistsException {
         if(artistRepository.existsByName(artist.getName())) {
@@ -83,10 +89,11 @@ public class ArtistController {
         return artistRepository.save(artist);
     }
 
+//    Q5
     @PutMapping(value = "/{id}")
     public Artist updateArtist(@PathVariable("id") Long id, @RequestBody Artist artist) {
         if (!artistRepository.existsById(id)) {
-            throw new EntityNotFoundException("L'artiste d'identifiant " + id + " n'a pas été trouvé.");
+            throw new EntityNotFoundException("L'artiste d'identifiant " + id + " n'existe pas.");
         }
         if (!id.equals(artist.getId())) {
             throw new IllegalArgumentException("Requete invalide.");
@@ -94,4 +101,12 @@ public class ArtistController {
         return artistRepository.save(artist);
     }
 
+//    Q6
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT) //204
+    public void deleteArtist(@PathVariable("id") Long id) {
+        Optional<Artist> artist = artistRepository.findById(id);
+        albumRepository.deleteAllByArtist(artist);
+        artistRepository.deleteById(id);
+    }
 }

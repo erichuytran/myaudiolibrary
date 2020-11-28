@@ -1,8 +1,11 @@
 package com.myaudiolibrary.web.repository;
 
 import com.myaudiolibrary.web.model.Album;
+import com.myaudiolibrary.web.model.Artist;
 import org.springframework.data.repository.CrudRepository;
 
-public interface AlbumRepository extends CrudRepository<Album, Long> {
+import java.util.Optional;
 
+public interface AlbumRepository extends CrudRepository<Album, Long> {
+    void deleteAllByArtist(Optional<Artist> artist);
 }
