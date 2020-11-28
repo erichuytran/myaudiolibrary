@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface AlbumRepository extends CrudRepository<Album, Long> {
     void deleteAllByArtist(Optional<Artist> artist);
+
+    Boolean existsByTitle(String title);
 }

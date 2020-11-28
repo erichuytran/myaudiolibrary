@@ -11,6 +11,7 @@ public class Album {
     private Artist artist;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AlbumId")
     private Long id;
 

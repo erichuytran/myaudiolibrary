@@ -102,11 +102,11 @@ public class ArtistController {
     }
 
 //    Q6
-    @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT) //204
-    public void deleteArtist(@PathVariable("id") Long id) {
-        Optional<Artist> artist = artistRepository.findById(id);
-        albumRepository.deleteAllByArtist(artist);
-        artistRepository.deleteById(id);
-    }
+//    @DeleteMapping(value = "/{id}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT) //204
+//    public void deleteArtist(@PathVariable("id") Long id) {
+//        Optional<Artist> artist = artistRepository.findById(id);
+//        albumRepository.deleteAllByArtist(artist);
+//        artistRepository.deleteById(id);
+//    }
 }
