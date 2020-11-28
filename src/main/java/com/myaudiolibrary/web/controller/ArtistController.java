@@ -10,8 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.InstanceAlreadyExistsException;
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -73,7 +73,11 @@ public class ArtistController {
         return artistsPage;
     }
 
-
-//    }
-
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Artist createArtist(@RequestBody Artist artist) throws InstanceAlreadyExistsException {
+        if(artistRepository.existsByName(artist.getName())) {
+            throw new InstanceAlreadyExistsException("L'artiste " + artist.getName() + " existe déjà.");
+        }
+        return artistRepository.save(artist);
+    }
 }

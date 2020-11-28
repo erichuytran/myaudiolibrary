@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.management.InstanceAlreadyExistsException;
 import javax.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
@@ -12,6 +13,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleEntityNotFoundException(EntityNotFoundException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(InstanceAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleInstanceAlreadyExistsException(InstanceAlreadyExistsException e) {
         return e.getMessage();
     }
 }

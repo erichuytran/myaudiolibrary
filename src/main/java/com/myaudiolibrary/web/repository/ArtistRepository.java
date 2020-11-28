@@ -11,5 +11,7 @@ import java.util.List;
 public interface ArtistRepository extends CrudRepository<Artist, Long> {
     Page<Artist> findByNameContaining(String name, Pageable pageable);
 
+    Boolean existsByName(String name);
+
     Page<Artist> findAll(Pageable pageable);
 }
