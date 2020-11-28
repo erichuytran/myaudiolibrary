@@ -1,14 +1,11 @@
 package com.myaudiolibrary.web.controller;
 
 import com.myaudiolibrary.web.model.Album;
-import com.myaudiolibrary.web.model.Artist;
 import com.myaudiolibrary.web.repository.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.management.InstanceAlreadyExistsException;
 
@@ -26,6 +23,12 @@ public class AlbumController {
             throw new InstanceAlreadyExistsException("L'album " + album.getTitle() + " de " + album.getArtist() + "existe déjà.");
         }
         return albumRepository.save(album);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT) //204
+     public void deleteAlbum(@PathVariable("id") Long id) {
+        albumRepository.deleteById(id);
     }
 
 }
