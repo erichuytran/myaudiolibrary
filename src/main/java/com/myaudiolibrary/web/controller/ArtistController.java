@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -102,11 +103,12 @@ public class ArtistController {
     }
 
 //    Q6
-//    @DeleteMapping(value = "/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT) //204
-//    public void deleteArtist(@PathVariable("id") Long id) {
-//        Optional<Artist> artist = artistRepository.findById(id);
-//        albumRepository.deleteAllByArtist(artist);
-//        artistRepository.deleteById(id);
-//    }
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT) //204
+    @Transactional
+    public void deleteArtist(@PathVariable("id") Long id) {
+        Optional<Artist> artist = artistRepository.findById(id);
+        albumRepository.deleteByArtist(artist);
+        artistRepository.deleteById(id);
+    }
 }

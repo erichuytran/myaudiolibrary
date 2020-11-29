@@ -7,7 +7,8 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface AlbumRepository extends CrudRepository<Album, Long> {
-    void deleteAllByArtist(Optional<Artist> artist);
+
+    void deleteByArtist(Optional<Artist> artist);
 
     Boolean existsByTitle(String title);
 }
