@@ -45,7 +45,7 @@ public class ArtistController {
         Optional<Artist> artist = artistRepository.findById(id);
         if(artist.isEmpty()) {
             throw new EntityNotFoundException("L'artiste d'identifiant " + id + " n'a pas été trouvé.");
-    }
+        }
         return artist;
     }
 
@@ -108,6 +108,9 @@ public class ArtistController {
     @Transactional
     public void deleteArtist(@PathVariable("id") Long id) {
         Optional<Artist> artist = artistRepository.findById(id);
+        if(artist.isEmpty()) {
+            throw new EntityNotFoundException("L'artiste d'identifiant " + id + " n'existe pas.");
+        }
         albumRepository.deleteByArtist(artist);
         artistRepository.deleteById(id);
     }

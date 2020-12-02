@@ -20,7 +20,7 @@ public class AlbumController {
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Album createAlbum(@RequestBody Album album) throws InstanceAlreadyExistsException {
         if(albumRepository.existsByTitle(album.getTitle())) {
-            throw new InstanceAlreadyExistsException("L'album " + album.getTitle() + " de " + album.getArtist() + "existe déjà.");
+            throw new InstanceAlreadyExistsException("L'album " + album.getTitle() + " de " + album.getArtist() + " existe déjà.");
         }
         return albumRepository.save(album);
     }
