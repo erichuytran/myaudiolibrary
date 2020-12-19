@@ -52,12 +52,33 @@ public class ArtistController {
     }
 
     @GetMapping(value = "", params = "name", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String searchByName(final ModelMap model, @RequestParam(value = "name") String name){
+    public String searchByName(final ModelMap model, @RequestParam(value = "name") String name) {
         List<Artist> artists = artistRepository.findByNameContainingIgnoreCase(name);
         Integer totalArtists = artists.size();
         model.put("artists", artists);
         model.put("totalArtists", totalArtists);
 
+        return "listeArtists";
+    }
+
+    @GetMapping(
+            value = "",
+            params = {"page", "size", "sortProperty", "sortDirection"},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public String artistPagedList(
+            final ModelMap model,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @RequestParam(value = "sortProperty", defaultValue = "name") String sortProperty,
+            @RequestParam(value = "sortDirection", defaultValue = "ASC") Sort.Direction sortDirection) {
+        checkParams(page, size, sortDirection);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortProperty));
+        Page<Artist> artistsPage = artistRepository.findAll(pageable);
+        model.put("artists", artistsPage);
+        model.put("pageNumber", page + 1);
+        // IL FAUT DISABLE LE BOUTTON SI ON EST SUR LA PREMIERE PAGE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!s!!!!!!!!!!!!!!!!!
+        model.put("previousPage", page - 1);
+        model.put("nextPage", page + 1);
         return "listeArtists";
     }
 
