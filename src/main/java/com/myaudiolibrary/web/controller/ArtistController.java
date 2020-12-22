@@ -10,10 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -80,6 +78,18 @@ public class ArtistController {
         model.put("previousPage", page - 1);
         model.put("nextPage", page + 1);
         return "listeArtists";
+    }
+
+    @GetMapping(value = "/new")
+    public String newArtist(final ModelMap model) {
+        model.put("artist", new Artist());
+        return "detailArtist";
+    }
+
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public RedirectView createArtist(Artist artist) {
+        artist = artistRepository.save(artist);
+        return new RedirectView("/artists/" + artist.getId());
     }
 
 }

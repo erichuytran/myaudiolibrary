@@ -10,4 +10,5 @@ import java.util.List;
 public interface ArtistRepository extends CrudRepository<Artist, Long> {
     List<Artist> findByNameContainingIgnoreCase(String name);
     Page<Artist> findAll(Pageable pageable);
+    Boolean existsByName(String name);
 }
