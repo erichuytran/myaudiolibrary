@@ -92,4 +92,10 @@ public class ArtistController {
         return new RedirectView("/artists/" + artist.getId());
     }
 
+    @PostMapping(value = "/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public RedirectView saveArtist(Artist artist, @PathVariable Long id) {
+        artistRepository.save(artist);
+        return new RedirectView("/artists/" + id);
+    }
+
 }
