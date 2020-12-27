@@ -1,6 +1,7 @@
 package com.myaudiolibrary.web.controller;
 
 import com.myaudiolibrary.web.model.Artist;
+import com.myaudiolibrary.web.repository.AlbumRepository;
 import com.myaudiolibrary.web.repository.ArtistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -23,6 +25,9 @@ public class ArtistController {
 
     @Autowired
     ArtistRepository artistRepository;
+
+    @Autowired
+    AlbumRepository albumRepository;
 
     public void checkParams(Integer page, Integer size, Sort.Direction sortDirection) {
         if (page < 0) {
@@ -92,10 +97,23 @@ public class ArtistController {
         return new RedirectView("/artists/" + artist.getId());
     }
 
-    @PostMapping(value = "/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public RedirectView saveArtist(Artist artist, @PathVariable Long id) {
         artistRepository.save(artist);
         return new RedirectView("/artists/" + id);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @Transactional
+//    @ResponseStatus(HttpStatus.NO_CONTENT) //204
+    public RedirectView deleteArtist(@PathVariable Long id) {
+        Optional<Artist> artist = artistRepository.findById(id);
+        if(artist.isEmpty()) {
+            // Generer une erreur
+        }
+        albumRepository.deleteByArtist(artist);
+        artistRepository.deleteById(id);
+        return new RedirectView("/artists?page=0&size=10&sortProperty=name&sortDirection=ASC");
     }
 
 }
