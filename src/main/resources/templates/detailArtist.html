@@ -58,20 +58,21 @@
 					</form>
 
 					<div class="row">
-							<div class="col-lg-10">
-								<input type="text" placeholder="Ajouter un album..." class="form-control ember-text-field ember-view">
-							</div>
-							<div class="col-lg-2 text-center">
-								<form th:action="'/albums'" method="post">
+						<div class="col">
+							<form th:action="'/albums'" method="post">
+								<input type="text" placeholder="Ajouter un album..." class="form-control ember-text-field ember-view" name="title">
+								<input type="hidden" name="artist" th:value="${artist.id}">
+								<div class="col text-center">
 									<button type="submit" class="glyphicon glyphicon-plus btn-success list-group-item list-group-item-action"></button>
-								</form>
-							</div>
+								</div>
+							</form>
 						</div>
+					</div>
 				</div>
 			</div>
 			<div class="row">
 				<button form="artistForm" type="submit" class="btn btn-primary">Enregistrer</button>
-				<form th:action="|/artists/${artist.id}|" th:method="delete">
+				<form th:if="${artist.id != null}" th:action="|/artists/${artist.id}|" th:method="delete">
 					<button class="btn btn-danger" type="submit">
 						Supprimer
 					</button>
