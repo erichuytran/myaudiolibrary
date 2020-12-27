@@ -26,14 +26,12 @@ public class AlbumController {
         albumRepository.save(album);
         return new RedirectView("/artists/" + album.getArtist().getId());
     }
-//
-//    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-////    @ResponseStatus(HttpStatus.NO_CONTENT) //204
-//    public RedirectView deleteAlbum(@PathVariable Long id) {
-//        Optional<Album> album = albumRepository.findById(id);
-//        Long artistId = album.get().getArtist().getId();
-//        albumRepository.deleteById(id);
-//        return new RedirectView("/artists/" + artistId);
-//    }
+
+    @DeleteMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseStatus(HttpStatus.NO_CONTENT) //204
+    public RedirectView deleteAlbum(Album album) {
+        albumRepository.deleteById(album.getId());
+        return new RedirectView("/artists/" + album.getArtist().getId());
+    }
 
 }

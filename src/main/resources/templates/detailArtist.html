@@ -45,18 +45,21 @@
 						<label for="name" class="form-control-label">Nom</label>
 						<input type="text" name="name" id="name" class="ember-text-field form-control ember-view" th:value="${artist.name}">
 						<label for="performance" class="form-control-label">Albums</label>
-						<div class="row">
-							<div class="col-lg-10">
-								<div class="list-group" th:each="album : ${artist.albums}">
+					</form>
+					<div class="row">
+						<div class="col-lg-10">
+							<div class="list-group" th:each="album : ${artist.albums}">
+								<form action="/albums" th:method="delete">
 									<div class="list-group-item">
-										<li class="list-group-item" >[[${album.title}]]</li>
-										<a class="btn-danger list-group-item list-group-item-action" th:href="'/albums/' + ${artist.id}"><span class="glyphicon glyphicon-remove"></span></a>
+										<input class="list-group-item" th:name="title" th:value="${album.title}">
+										<input class="list-group-item" th:name="id" th:value="${album.id}" type="hidden">
+										<input class="list-group-item" th:name="artist" th:value="${artist.id}" type="hidden">
+										<button class="btn-danger list-group-item list-group-item-action" type="submit"><span class="glyphicon glyphicon-remove"></span></button>
 									</div>
-								</div>
+								</form>
 							</div>
 						</div>
-					</form>
-
+					</div>
 					<div class="row">
 						<div class="col">
 							<form th:action="'/albums'" method="post">
