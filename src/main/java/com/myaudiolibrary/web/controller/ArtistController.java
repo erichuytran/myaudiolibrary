@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.management.InstanceAlreadyExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -42,10 +44,10 @@ public class ArtistController {
     }
 
     @GetMapping(value = "/{id}")
-    public String getArtistById(@PathVariable Long id, final ModelMap model) {
+    public String getArtistById(@PathVariable Long id, final ModelMap model) throws EntityNotFoundException {
         Optional<Artist> artistOptionnal = artistRepository.findById(id);
 
-        //Gestion de l'erreur 404 ///////////////////////// TROUVER COMMENT AFFICHER LE MESSAGE CORRECTEMENT
+        //Gestion de l'erreur 404
         if (artistOptionnal.isEmpty()) {
             throw new EntityNotFoundException("L'artiste d'identifiant " + id + " n'a pas été trouvé");
         }
@@ -91,25 +93,33 @@ public class ArtistController {
         return "detailArtist";
     }
 
-    @PostMapping(value = "", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public RedirectView createArtist(Artist artist) {
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public RedirectView createArtist(Artist artist) throws InstanceAlreadyExistsException {
+        if(artistRepository.existsByName(artist.getName())) {
+            throw new InstanceAlreadyExistsException("L'artiste " + artist.getName() + " existe déjà.");
+        }
         artist = artistRepository.save(artist);
         return new RedirectView("/artists/" + artist.getId());
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public RedirectView saveArtist(Artist artist, @PathVariable Long id) {
+    public RedirectView saveArtist(Artist artist, @PathVariable Long id) throws EntityNotFoundException {
+        if (!artistRepository.existsById(id)) {
+            throw new EntityNotFoundException("L'artiste d'identifiant " + id + " n'existe pas.");
+        }
+        if (!id.equals(artist.getId())) {
+            throw new IllegalArgumentException("Requete invalide.");
+        }
         artistRepository.save(artist);
         return new RedirectView("/artists/" + id);
     }
 
     @DeleteMapping(value = "/{id}")
     @Transactional
-//    @ResponseStatus(HttpStatus.NO_CONTENT) //204
-    public RedirectView deleteArtist(@PathVariable Long id) {
+    public RedirectView deleteArtist(@PathVariable Long id) throws EntityNotFoundException {
         Optional<Artist> artist = artistRepository.findById(id);
         if(artist.isEmpty()) {
-            // Generer une erreur
+            throw new EntityNotFoundException("L'artiste d'identifiant " + id + " n'existe pas.");
         }
         albumRepository.deleteByArtist(artist);
         artistRepository.deleteById(id);

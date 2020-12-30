@@ -13,11 +13,11 @@
 						<form class="form-group" id="artistForm" th:action="${artist.id != null ? '/artists/' + artist.id : '/artists'}" th:method="${artist.id != null ? 'put' : 'post'}">
 							<input type="hidden" th:value="${artist.id}" name="id">
 							<label for="name" class="form-control-label">Nom</label>
-							<input type="text" name="name" id="name" class="ember-text-field form-control ember-view" th:value="${artist.name}">
-							<label for="performance" class="form-control-label">Albums</label>
+							<input type="text" name="name" id="name" class="ember-text-field form-control ember-view" th:value="${artist.name}" required>
 						</form>
-						<div class="row">
+						<div class="row" th:if="${artist.id != null}">
 							<div class="col-lg-10">
+								<label for="performance" class="form-control-label">Albums</label>
 								<div class="list-group" th:each="album : ${artist.albums}">
 									<form action="/albums" th:method="delete">
 										<div class="list-group-item">
@@ -30,7 +30,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row">
+						<div class="row" th:if="${artist.id != null}" >
 							<div class="col">
 								<form th:action="'/albums'" method="post">
 									<input type="text" placeholder="Ajouter un album..." class="form-control ember-text-field ember-view" name="title">
